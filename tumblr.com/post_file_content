@@ -6,18 +6,28 @@
 require 'net/http'
 require 'uri'
 require 'cgi'
+require 'rubygems'
+require 'pit'
+def die string
+ begin puts string; exit; end
+end
+
+tumblr_group = ARGV[0] or die 'no tumblr group specified'
+filename = ARGV[1] or die 'no filename to post specified'
+conf = Pit.get 'thak.conf'
+if conf.empty? then die 'set your email and password into : pit set thak.conf' end
 
 #1: Simple POST
 res = Net::HTTP.post_form(URI.parse('http://www.tumblr.com/api/write'),
 {
-'email'=>'123@robotarmyma.de', 'password'=>'oliver',
- 'group' => 'robotarmyma.tumblr.com',
-'generator' =>'git - ?' ,
+'email'=>conf['email'] , 'password'=>conf['password'],
+ 'group' => tumblr_group,
+'generator' =>'thak - post_file_content - 1' ,
 'format' => 'html',
-'tags' => 'git commit message', 
+'tags' => 'thak', 
 'type' => 'regular',
-'title' => ARGV[0],
-'body' => "<pre>#{CGI.escapeHTML(IO.readlines(ARGV[0]).join)}</pre>",
+'title' => filename,
+'body' => "<pre>#{CGI.escapeHTML(IO.readlines(filename).join)}</pre>",
 
 })
 p res.body

@@ -4,6 +4,18 @@
 require 'net/http';
 require 'uri';
 require 'cgi';
+
+require 'rubygems'
+require 'pit'
+def die string
+ begin puts string; exit; end
+end
+
+tumblr_group = ARGV.shift or die 'no tumblr group specified'
+line = (ARGV.join(' '))#optional
+conf = Pit.get 'thak.conf'
+if conf.empty? then die 'set your email and password into : pit set thak.conf' end
+
 #1: Simple POST
 tmp_name = '.last-screen-palv.png'
 `scrot #{tmp_name}`
@@ -11,13 +23,13 @@ file_data = File.new(tmp_name,'rb');
 #`rm {tmp_name}`
 case res = Net::HTTP.post_form(URI.parse('http://www.tumblr.com/api/write'),
 {
-'email'=>'123@robotarmyma.de', 'password'=>'oliver',
- 'group' => 'adminlog.tumblr.com',
-'generator' =>'palv - 0.01 ' ,
+'email'=>conf['email'] , 'password'=>conf['password'],
+ 'group' => tumblr_group,
+'generator' =>'thak - post_image - 1 ' ,
 'format' => 'html',
 'tags' => 'pal oneliners', 
 'type' => 'photo',
-'caption' => "pal:<sub>#{`whoami`.chop}@#{`hostname`}</sub>:<p>#{CGI.escapeHTML(ARGV.join(' '))}</p>",
+'caption' => "pal:<sub>#{`whoami`.chop}@#{`hostname`}</sub>:<p>#{CGI.escapeHTML(line)}</p>",
 'data' => file_data.readlines(nil),#read without seperation
 })
 when Net::HTTPSuccess

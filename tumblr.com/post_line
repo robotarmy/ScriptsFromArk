@@ -4,18 +4,34 @@
 require 'net/http';
 require 'uri';
 require 'cgi';
+require 'rubygems'
+require 'pit'
+def die string
+ begin puts string; exit; end
+end
+
+tumblr_group = ARGV.shift or die 'no tumblr group specified'
+
+if ARGV.empty? then die 'no filename to post specified' end
+line = (ARGV.join(' ') or die 'no filename to post specified')
+
+conf = Pit.get 'thak.conf'
+if conf.empty? then die 'set your email and password into : pit set thak.conf' end
+
 #1: Simple POST
-case Net::HTTP.post_form(URI.parse('http://www.tumblr.com/api/write'),
+res = Net::HTTP.post_form(URI.parse('http://www.tumblr.com/api/write'),
 {
-'email'=>'123@robotarmyma.de', 'password'=>'oliver',
- 'group' => 'adminlog.tumblr.com',
-'generator' =>'pal - ?' ,
+'email'=>conf['email'] , 'password'=>conf['password'],
+ 'group' => tumblr_group,
+'generator' =>'thak - post_line - 1' ,
 'format' => 'html',
 'tags' => 'pal oneliners', 
 'type' => 'regular',
 'title' => "pal: Oneliner from #{`whoami`.chop}@#{`hostname`}",
-'body' => "<p>#{CGI.escapeHTML(ARGV.join(' '))}</p>",
+'body' => "<p>#{CGI.escapeHTML(line)}</p>",
 })
+p res.body
+case res
 when Net::HTTPSuccess
 # OK
 exit(0)
