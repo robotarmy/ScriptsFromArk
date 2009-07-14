@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # one argument : line of text
 # one return code : zero for accepted message
+#
 require 'net/http';
 require 'uri';
 require 'cgi';
