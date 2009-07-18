@@ -1,0 +1,69 @@
+h1. ruby-tumblr
+
+h2. What
+
+ruby-tumblr is a library for tumblr API.
+
+h2. Installing
+
+<pre syntax="ruby">sudo gem install ruby-tumblr</pre>
+
+h2. API Document
+
+http://ruby-tumblr.rubyforge.org/rdoc/
+
+h2. Demonstration of usage
+
+h3. read
+
+<pre><code>
+Tumblr::API.read("tumblr.dynamic-semantics.com") do |pager|
+  data = pager.page(0)
+  p data.tumblelog
+  data.posts.each do |post|
+    p post
+  end
+end
+</code></pre>
+
+h3. write
+
+<pre><code>
+Tumblr::API.write($email, $password) do
+  regular("test body", "test title")
+  quote("test quote", "test source")
+  link("http://tumblr.dynamic-semantics.com", "test link")
+end
+</code></pre>
+
+h3. backup
+
+<pre><code>
+Tumblr::API.read("tumblr.dynamic-semantics.com") do |pager|
+  data = Tumblr::Data.new
+  0.upto(pager.last_page) do |n|
+    puts "get #{n}/#{pager.last_page}"
+    data << pager.page(n)
+  end
+  data.save(File.join(ENV["HOME"], "backup.xml"))
+end
+</code></pre>
+
+h2. Forum
+
+"http://groups.google.com/group/ruby-tumblr":http://groups.google.com/group/ruby-tumblr
+
+
+h2. How to submit patches
+
+Read the "8 steps for fixing other people's code":http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/ and for section "8b: Submit patch to Google Groups":http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/#8b-google-groups, use the Google Group above.
+
+The trunk repository is <code>svn://rubyforge.org/var/svn/ruby-tumblr/trunk</code> for anonymous access.
+
+h2. License
+
+This code is free to use under the terms of the Ruby license. 
+
+h2. Contact
+
+Comments are welcome. Send an email to "Keita Yamaguchi":mailto:keita.yamaguchi@gmail.com.

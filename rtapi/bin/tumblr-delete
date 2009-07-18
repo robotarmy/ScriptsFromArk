@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+require "rubygems"
+require "tumblr"
+require "pit"
+
+$KCODE = "UTF-8"
+
+# ==========================================================
+# Configuration by using Pit
+# ----------------------------------------------------------
+# You set $EDITOR as your favorite editor before:
+# $ pit set tumblr.com
+# ---
+# username: your name
+# site: domain name if you set a custom domain name
+# password: your password
+$config = Pit.get("tumblr.com")
+$site = $config["site"] || $config["username"]
+
+writer = Tumblr::API.write($config["email"],
+                           $config["password"])
+
+if writer.authenticated?
+  ARGV.each do |postid|
+    if md = /(\d+)$/.match(postid)
+      postid = md[1]
+      writer.delete(postid)
+      puts "Deleted (ID: #{postid})"
+    end
+  end
+else
+  puts "login error: invalid user name or password"
+end

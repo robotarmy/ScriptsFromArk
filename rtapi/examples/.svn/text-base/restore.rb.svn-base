@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "tumblr"
+
+Tumblr::Data.load(File.join(ENV["HOME"],"backup.xml"))

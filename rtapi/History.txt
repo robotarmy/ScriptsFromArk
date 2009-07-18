@@ -1,0 +1,26 @@
+== 0.1.0 2008-02-xx
+
+* Bruno Zanchet:
+  * add Tumblr::API::Writer#authenticate
+* Keita Yamaguchi:
+  * clean up lib/tumblr.rb (Post#to_xml etc.)
+  * add Tumblr::API::Writer#check_vimeo
+  * add Tumblr::API::Writer#check_audio
+  * add Tumblr::Data::Post#bookmarklet?
+  * add Tumblr::Data::Post.post_type
+  * raname Tumblr::Data::Link#name to #text
+  * rename Tumblr::Data::Post#postid to #id
+  * add RSpec tests
+
+== 0.0.2 2007-08-21
+
+* Keita Yamaguchi:
+  * fixed backup function
+  * implemented Tumblr::Data.load
+* hatenaid:eto:
+  * fix many bugs (http://eto.com/d/RubyTumblr.html)
+
+== 0.0.1 2007-08-20
+
+* Keita Yamaguchi:
+  * Initial release

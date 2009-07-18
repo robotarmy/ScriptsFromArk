@@ -1,0 +1,6 @@
+update hoe to new version and update readme to sow format
+--This line, and those below, will be ignored--
+
+M    spec/tumblr_spec.rb
+M    config/hoe.rb
+M    README.txt
