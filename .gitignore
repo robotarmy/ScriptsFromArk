@@ -1,0 +1,5 @@
+.DS_Store
+.tmtags
+pkg
+doc
+*.gem
